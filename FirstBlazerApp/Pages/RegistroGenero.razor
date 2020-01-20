@@ -30,6 +30,7 @@
 
             <label class="mr-md-1">Genero</label>
             <input type="text" placeholder="Ingrese el nombre del Genero" name="name" class="form-control " @bind="genero.Nombre" />
+            <small  class="form-text text-muted">@Validacion</small>
             <button class="btn btn-success mt-md-2" @onclick="Guardar">Guardar</button>
             <a class="btn btn-primary mt-md-2" href="fetchdata">Ir a la lista de Generos</a>
 
@@ -45,16 +46,21 @@
 
     [Parameter]
     public int Id { get; set; }
+    public string Validacion { get; set; }
 
     Generos genero = new Generos();
 
     protected override void OnInitialized()
     {
+
+        Validacion = string.Empty;
+
+        RepositorioBase<Generos> db = new RepositorioBase<Generos>();
         try
         {
             if (Id != 0)
             {
-                genero = RepostitorioGenero.Buscar(Id);
+                genero = db.Buscar(Id);
             }
         }
         catch (Exception) { throw; }
@@ -66,6 +72,18 @@
         RepositorioBase<Generos> db = new RepositorioBase<Generos>();
         try
         {
+            if(string.IsNullOrEmpty(genero.Nombre))
+            {
+                Validacion = "No puede estar vacio";
+                return;
+            }
+
+            if(string.IsNullOrWhiteSpace(genero.Nombre))
+            {
+                Validacion = "No puede estar vacio";
+                return;
+            }
+
             if (genero.GeneroId > 0)
             {
                 Modificar();
@@ -75,7 +93,8 @@
                 if (db.Guardar(genero))
                 {
                     genero = new Generos();
-                    genero.Nombre = "Guardado";
+                    genero.Nombre = string.Empty;
+                    Validacion = "Se guardo correctamen";
                 }
 
             }
@@ -94,7 +113,8 @@
             {
 
                 genero = new Generos();
-                genero.Nombre = "Guardado";
+                genero.Nombre = string.Empty;
+                Validacion = "Modificado Correctamente";
 
             }
 
