@@ -5,9 +5,9 @@
 @using FirstBlazerApp.BLL;
 @inject WeatherForecastService ForecastService
 
-<h1 class="display-3 text-center">Lista de Generos</h1>
 
-<p class="display-4 text-center">Lista de Generos registrados</p>
+
+
 
 @if (lista.Count() == 0)
 {
@@ -16,29 +16,30 @@
 else
 {
 
-    <div class="container">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Genero</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @{foreach (var obj in lista)
-                    {
-                        <tr>
-                            <th>@obj.GeneroId</th>
-                            <td>@obj.Nombre</td>
-                            <td><a href="RegistroGenero/@obj.GeneroId">Editar</a>|<a href="/Eliminar/@obj.GeneroId">Eliminar</a></td>
-                        </tr>
-                    }
+<div class="container">
+    <p class="display-3 text-center ">Lista de Generos</p>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Genero</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{foreach (var obj in lista)
+                {
+                    <tr>
+                        <th>@obj.GeneroId</th>
+                        <td>@obj.Nombre</td>
+                        <td><a href="RegistroGenero/@obj.GeneroId">Editar</a>|<a href="/Eliminar/@obj.GeneroId">Eliminar</a></td>
+                    </tr>
                 }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-    </div>
+</div>
 
 }
 
@@ -53,10 +54,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        RepositorioBase<Generos> db = new RepositorioBase<Generos>();
 
         try
         {
-            lista = RepostitorioGenero.GetList();
+            lista = db.GetList(A => true);
         }
         catch (Exception) { throw; }
     }

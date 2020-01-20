@@ -7,47 +7,37 @@
 
 <style>
     .box {
-        max-width: 500px;
+        width: 500px;
         margin: 1.75rem auto;
         position: relative;
-        width: auto;
         box-sizing: border-box;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        border-radius : 4px;
+        box-shadow: 7px 13px 37px #000;
     }
 </style>
 
 
 
-<div class="active ">
+<div class="container">
 
-    <div>
-        <h3 class="display-3 text-center">Registro de Generos</h3>
-    </div>
+    <div class="box text-white p-md-3 ">
+        <div>
+            <h3 class=" text-center ">Registro de Generos</h3>
+        </div>
 
-    <div class="box ">
+        <div class="form-group">
 
-        <div class=" modal-body box">
-
-            <div class="form-inline">
-                <div class="form-group">
-
-                    <label class="mr-md-1">Genero:</label>
-                    <input type="text" placeholder="Ingrese el nombre del Genero" name="name" class="form-control mr-md-2" @bind="genero.Nombre" />
-                    <button class="btn btn-success" @onclick="Guardar">Guardar</button>
-
-
-                </div>
-
-
-            </div>
+            <label class="mr-md-1">Genero</label>
+            <input type="text" placeholder="Ingrese el nombre del Genero" name="name" class="form-control " @bind="genero.Nombre" />
+            <button class="btn btn-success mt-md-2" @onclick="Guardar">Guardar</button>
+            <a class="btn btn-primary mt-md-2" href="fetchdata">Ir a la lista de Generos</a>
 
         </div>
 
-
     </div>
 
-
 </div>
-
 
 
 
@@ -55,8 +45,6 @@
 
     [Parameter]
     public int Id { get; set; }
-
-
 
     Generos genero = new Generos();
 
@@ -75,6 +63,7 @@
 
     private void Guardar()
     {
+        RepositorioBase<Generos> db = new RepositorioBase<Generos>();
         try
         {
             if (genero.GeneroId > 0)
@@ -83,16 +72,11 @@
             }
             else
             {
-                if (RepostitorioGenero.Guardar(genero))
+                if (db.Guardar(genero))
                 {
-
-                    StateHasChanged();
                     genero = new Generos();
                     genero.Nombre = "Guardado";
-
                 }
-
-
 
             }
         }
@@ -102,11 +86,11 @@
 
     private void Modificar()
     {
-
+        RepositorioBase<Generos> db = new RepositorioBase<Generos>();
         try
         {
 
-            if (RepostitorioGenero.Modificar(genero))
+            if (db.Modificar(genero))
             {
 
                 genero = new Generos();
@@ -117,6 +101,5 @@
         }
         catch (Exception) { throw; }
     }
-
 
 }
