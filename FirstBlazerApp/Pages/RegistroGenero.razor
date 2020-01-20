@@ -1,0 +1,122 @@
+﻿@page "/RegistroGenero/{Id:int}"
+
+@using FirstBlazerApp.Entidades;
+@using FirstBlazerApp.BLL;
+
+
+
+<style>
+    .box {
+        max-width: 500px;
+        margin: 1.75rem auto;
+        position: relative;
+        width: auto;
+        box-sizing: border-box;
+    }
+</style>
+
+
+
+<div class="active ">
+
+    <div>
+        <h3 class="display-3 text-center">Registro de Generos</h3>
+    </div>
+
+    <div class="box ">
+
+        <div class=" modal-body box">
+
+            <div class="form-inline">
+                <div class="form-group">
+
+                    <label class="mr-md-1">Genero:</label>
+                    <input type="text" placeholder="Ingrese el nombre del Genero" name="name" class="form-control mr-md-2" @bind="genero.Nombre" />
+                    <button class="btn btn-success" @onclick="Guardar">Guardar</button>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+
+
+    Generos genero = new Generos();
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            if (Id != 0)
+            {
+                genero = RepostitorioGenero.Buscar(Id);
+            }
+        }
+        catch (Exception) { throw; }
+
+    }
+
+    private void Guardar()
+    {
+        try
+        {
+            if (genero.GeneroId > 0)
+            {
+                Modificar();
+            }
+            else
+            {
+                if (RepostitorioGenero.Guardar(genero))
+                {
+
+                    StateHasChanged();
+                    genero = new Generos();
+                    genero.Nombre = "Guardado";
+
+                }
+
+
+
+            }
+        }
+        catch (Exception) { throw; }
+
+    }
+
+    private void Modificar()
+    {
+
+        try
+        {
+
+            if (RepostitorioGenero.Modificar(genero))
+            {
+
+                genero = new Generos();
+                genero.Nombre = "Guardado";
+
+            }
+
+        }
+        catch (Exception) { throw; }
+    }
+
+
+}

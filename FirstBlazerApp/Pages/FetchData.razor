@@ -1,46 +1,63 @@
 ﻿@page "/fetchdata"
 
 @using FirstBlazerApp.Data
+@using FirstBlazerApp.Entidades;
+@using FirstBlazerApp.BLL;
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h1 class="display-3 text-center">Lista de Generos</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p class="display-4 text-center">Lista de Generos registrados</p>
 
-@if (forecasts == null)
+@if (lista.Count() == 0)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
+
+    <div class="container">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <th>Id</th>
+                    <th>Genero</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @{foreach (var obj in lista)
+                    {
+                        <tr>
+                            <th>@obj.GeneroId</th>
+                            <td>@obj.Nombre</td>
+                            <td><a href="RegistroGenero2/@obj.GeneroId">Editar</a>|<a href="/Eliminar/@obj.GeneroId">Eliminar</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+
 }
+
+
+
 
 @code {
     private WeatherForecast[] forecasts;
 
+    public List<Generos> lista = new List<Generos>();
+
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        try
+        {
+            lista = RepostitorioGenero.GetList();
+        }
+        catch (Exception) { throw; }
     }
 }

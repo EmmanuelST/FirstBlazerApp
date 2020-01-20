@@ -1,0 +1,36 @@
+﻿@page "/Eliminar/{Id:int}"
+@using BlazorApp1.Entidades;
+@using BlazorApp1.BLL;
+
+<h3 class="display-1 text-center">Eliminado</h3>
+<h4><a href="fetchdata">Volver a la lista</a></h4>
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+
+
+
+    protected override void OnInitialized()
+    {
+
+
+        try
+        {
+            if (Id != 0)
+            {
+
+                if (RepostitorioGenero.Eliminar(Id))
+                {
+
+                }
+            }
+        }
+        catch (Exception) { throw; }
+
+    }
+
+}
